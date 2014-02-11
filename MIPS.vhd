@@ -68,8 +68,7 @@ ARCHITECTURE MIPS_1 of MIPS is
 			ALUOp       : out std_logic_vector(1 downto 0);
 			MemWrite    : out std_logic;
 			MemRead     : out std_logic;
-			MemToReg    : out std_logic;
-			OpImmediate : out std_logic);
+			MemToReg    : out std_logic);
 	end component;
 
 	component Memory
@@ -79,7 +78,7 @@ ARCHITECTURE MIPS_1 of MIPS is
 			MemWrite  : in  std_logic;                     -- the write signal from the OutputControl
 			MemRead   : in  std_logic;                     -- the read signal from the OutputControl
 			outRAM    : out std_logic_vector(31 downto 0);
-			CLK       : in  std_logic);  -- the output if is a read operation
+			reset     : in  std_logic);  -- the output if is a read operation
 	end component;
   
 	component MUX2_5
@@ -109,11 +108,7 @@ ARCHITECTURE MIPS_1 of MIPS is
 	signal FA_PC: std_logic_vector(31 downto 0); -- FullAdder -> ProgramCounter
 	signal OUT_IM: std_logic_vector(31 downto 0); -- Output InstructionMemory
 	signal FOUR: std_logic_vector(31 downto 0); -- For 4 creation
-	--signal IM_REG   : std_logic_vector(31 downto 0); -- InstructionMemory -> Registers
 	signal outALU: std_logic_vector(31 downto 0); -- Output from ALU
-	--signal TMP   : std_logic_vector(31 downto 0);
-	--signal PLUTO   : std_logic_vector(31 downto 0);
-	--
 	signal RegWrite: std_logic;
 	signal ALUSrc:   std_logic;
 	signal ALUOp:    std_logic_vector(1 downto 0);
@@ -129,7 +124,6 @@ ARCHITECTURE MIPS_1 of MIPS is
 	signal DataWriteIn:    std_logic_vector(31 downto 0);
 	signal MUXregOut:      std_logic_vector(4 downto 0);
 	signal MUXaluOut:      std_logic_vector(31 downto 0);
-	signal ExtendedIM_REG: std_logic_vector(31 downto 0);
 	signal SignExOut:      std_logic_vector(31 downto 0);
 	signal outRAM:         std_logic_vector(31 downto 0);
   
@@ -193,7 +187,7 @@ BEGIN
 			MemWrite  => MemWrite,
 			MemRead   => MemRead,
 			outRAM    => outRAM,
-			CLK       => CLK);
+			reset     => Rst);
 	MUXreg: MUX2_5
 		port map(
 			MUXin1 => OUT_IM(20 downto 16),
