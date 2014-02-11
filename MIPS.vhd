@@ -68,6 +68,7 @@ ARCHITECTURE MIPS_1 of MIPS is
 			ALUOp       : out std_logic_vector(1 downto 0);
 			MemWrite    : out std_logic;
 			MemRead     : out std_logic;
+			RegDst      : out std_logic;
 			MemToReg    : out std_logic);
 	end component;
 
@@ -153,7 +154,7 @@ BEGIN
 		port map(
 			RegIn1      => OUT_IM(25 downto 21),
 			RegIn2      => OUT_IM(20 downto 16),
-			RegWriteIn  => OUT_IM(15 downto 11),
+			RegWriteIn  => MUXregOut,
 			DataWriteIn => DataWriteIn,
 			RegWrite    => RegWrite,
 			RegOut1     => RegOut1,
@@ -167,6 +168,7 @@ BEGIN
 			ALUOp    => ALUOp,
 			MemWrite => MemWrite,
 			MemRead  => MemRead,
+			RegDst   => RegDst,
 			MemToReg => MemToReg);
 
 	ALUC_1: ALUControl

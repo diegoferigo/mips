@@ -23,13 +23,13 @@ ARCHITECTURE InstructionMemory_1 of InstructionMemory is
 		                        --rs: location of register containing the memory start point (e.g. num 3)
 		5 => "011" & "00100",   --rt: location of register containing the number to store (e.g. num 4)
 		6 => "00000000",        --offset (e.g. 0)
-		7 => "00000110",
+		7 => "00000000",
 		-- Instruction 2:
 		8 => "100011" & "00",   --op: load word
-		                        --rs: number 0 (memory start point)
-		9 => "011" & "00101",   --rt: location of register where load the number (e.g. num 5)
-		10 => "00000000",       --offset (e.g. 0)
-		11 => "00000001",
+		                        --rs: number 0 (register with the memory start point)
+		9 => "001" & "00101",   --rt: location of register where load the number (e.g. num 5)
+		10 => "00000000",       --offset (e.g. 6)
+		11 => "00000110",
               
 		--4 => "101011" & "00", --op: store word
 		                        --rs: number 4 (memory start point)
