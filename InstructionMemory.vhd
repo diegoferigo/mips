@@ -30,12 +30,13 @@ ARCHITECTURE InstructionMemory_1 of InstructionMemory is
 		9 => "001" & "00101",   --rt: location of register where load the number (e.g. num 5)
 		10 => "00000000",       --offset (e.g. 6)
 		11 => "00000110",
-              
-		--4 => "101011" & "00", --op: store word
-		                        --rs: number 4 (memory start point)
-		--5 => "100" & "00011", --rt: location of register containing the number to store (e.g. num 3)
-		--6 => "00000000",      --offset (e.g. 0)
-		--7 => "00000001",
+        -- Instruction 3:
+        12 => "000000" & "00",  --op: 0x00 arithmetic
+		                        --rs: register with 1st operand (3)
+		13 => "011" & "00100",  --rt: register with 2nd operand (4)
+		14 => "00111" & "000",  --rd: destination register (7)
+		                        --shift: unused
+		15 => "00" & "100000",  --funct: 0x20 add
 		others=> (others => '0'));
 
 	signal FullInstruction: std_logic_vector(31 downto 0); -- to merge the 4 memory bytes

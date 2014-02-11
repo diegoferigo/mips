@@ -48,13 +48,12 @@ BEGIN
 			--all others type
 	with ALUOp select --TODO sistemare qua
 		tmpALUControl_op <=
-			"0001" when "01", --0x2B Store: i have to sum the base and relative address
-			--"0001" when "11", --0x23 Load : i have to sum the base and relative address
+			"0001" when "01", --0x2B Store and 0x23 Load: i have to sum the base and relative address
 			"1111" when others;
 			--The real output signal:
 	with ALUOp select
 		ALUCont_out <=
 			tmpALUControl_func when "00",
-			tmpALUControl_op when others;
+			tmpALUControl_op   when others;
 --
 END ALUControl_1;
