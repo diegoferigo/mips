@@ -20,7 +20,6 @@ ARCHITECTURE Registers_1 of Registers is
 			3=>"00000000000000000000000000000010",
 			4=>"00000000000000000000000011000000",
 			others=> (others => '0'));
-	signal extend: std_logic_vector(26 downto 0);
 --
 BEGIN
 --
