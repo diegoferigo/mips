@@ -43,7 +43,7 @@ BEGIN
 
 	with OC_in select
 		MemWrite <=
-			'1' when "101011", --only store
+			'1' after 2 ns when "101011", --only store
 			'0' when others;
 
 	with OC_in select
