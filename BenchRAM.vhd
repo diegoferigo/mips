@@ -25,10 +25,6 @@ signal MemWrite   : std_logic;
 signal MemRead    : std_logic;
 signal outRAM     : std_logic_vector(31 downto 0);
 
---signal indata_2   : std_logic_vector(31 downto 0);
---signal operation  : std_logic_vector(3 downto 0);
---signal output     : std_logic_vector(31 downto 0);
-
 BEGIN
 --
   --Unit Under Test:
@@ -52,15 +48,11 @@ BEGIN
 --
  stimilus: process(CLK)
   begin
-    --if ( CLK = '1' and CLK'event and Rst='0') then
-    --inRAM     <= "00000000000000000000000000000100";
-    --WriteData <= "11000000000000000000000000000011";
-    if ( rising_edge(CLK)) then -- and Rst='0') then
-          inRAM     <= "00000000000000000000000000000100";
+    if (rising_edge(CLK)) then -- and Rst='0') then
+          inRAM     <= "00000000000000000000000000000110";
           WriteData <= "11000000000000000000000000000011";
-          MemWrite <= '0';
-          MemRead <= '1';
-          outRAM <= outRAM;
+          MemWrite <= '1' after 2 ns;
+          MemRead <= '0';
     end if;
   end process;
 
