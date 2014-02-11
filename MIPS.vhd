@@ -1,7 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
-use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
 ENTITY MIPS IS
   port (
@@ -138,7 +137,7 @@ ARCHITECTURE MIPS_1 of MIPS is
   
 BEGIN
   --
-  FOUR <= conv_std_logic_vector(4, 32);
+  FOUR <= std_logic_vector(to_unsigned(4,32));
   FA_PC1: FullAdder         port map( in1 => PC_FA_IM,
                                       in2 => FOUR, 
                                       carryin => "0",
