@@ -21,7 +21,10 @@ ARCHITECTURE Memory_1 of Memory is
 BEGIN
 --
 	-- Convert the address to an integer >= 0
-	Address <= to_integer(unsigned(inRAM));
+	-- I need the else because i limited the RAM to 1023 byte and the ALU with arith function can
+	-- have an output > 1023 connected to the inRAM. In this case the simulation faults because an
+	-- out of range index
+	Address <= to_integer(unsigned(inRAM)) when (MemWrite='1' or MemRead='1') else 0;
 
 	-- Write to the right location only if MemWrite is 1 and reset is 0
 	ram(Address)    <= WriteData when (MemWrite='1' and reset='0');
