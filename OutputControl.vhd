@@ -11,7 +11,8 @@ ENTITY OutputControl is
 		--MemWrite_temp: out std_logic;
 		MemRead  : out std_logic;
 		RegDst   : out std_logic;
-		MemToReg : out std_logic);
+		MemToReg : out std_logic;
+		Jump     : out std_logic);
 END OutputControl;
 
 ARCHITECTURE OutputControl_1 of OutputControl is
@@ -21,8 +22,8 @@ BEGIN
 	with OC_in select
 		RegWrite <=
 			--'1' when "101011", --0x2B only when store in memory
-			'1' after 2 ns when "100011",--0x23 load by memory
-			'1' after 2 ns when "000000",--0x00 all arithmetic functions
+			'1' after 10 ns when "100011",--0x23 load by memory
+			'1' after 10 ns when "000000",--0x00 all arithmetic functions
 			'0' when others;
 
 	with OC_in select
@@ -43,7 +44,7 @@ BEGIN
 
 	with OC_in select
 		MemWrite <=
-			'1' after 2 ns when "101011", --only store
+			'1' after 10 ns when "101011", --only store
 			'0' when others;
 
 	with OC_in select
@@ -60,5 +61,10 @@ BEGIN
 		RegDst <=
 			'0' after 2 ns when "100011", --0x23 load word
 			'1' when others;
+
+	with OC_in select
+		Jump <=
+			'1' when "000010", --0x02 jump to address
+			'0' when others;
 --
 END OutputControl_1;

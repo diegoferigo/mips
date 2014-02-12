@@ -69,7 +69,8 @@ ARCHITECTURE MIPS_1 of MIPS is
 			MemWrite    : out std_logic;
 			MemRead     : out std_logic;
 			RegDst      : out std_logic;
-			MemToReg    : out std_logic);
+			MemToReg    : out std_logic;
+			Jump        : out std_logic);
 	end component;
 
 	component Memory
@@ -119,15 +120,20 @@ ARCHITECTURE MIPS_1 of MIPS is
 	signal MemRead:  std_logic;
 	signal RegDst:   std_logic;
 	signal MemToReg: std_logic;
+	signal Jump:     std_logic;
 	--signal OpImmediate: std_logic;
-	signal ALUControl_out: std_logic_vector(3 downto 0);
-	signal RegWriteIn:     std_logic_vector(31 downto 0);
-	signal DataWriteIn:    std_logic_vector(31 downto 0);
-	signal MUXregOut:      std_logic_vector(4 downto 0);
-	signal MUXaluOut:      std_logic_vector(31 downto 0);
-	signal SignExOut:      std_logic_vector(31 downto 0);
-	signal outRAM:         std_logic_vector(31 downto 0);
-  
+	signal ALUControl_out:    std_logic_vector(3 downto 0);
+	signal RegWriteIn:        std_logic_vector(31 downto 0);
+	signal DataWriteIn:       std_logic_vector(31 downto 0);
+	signal MUXregOut:         std_logic_vector(4 downto 0);
+	signal MUXaluOut:         std_logic_vector(31 downto 0);
+	signal SignExOut:         std_logic_vector(31 downto 0);
+	signal outRAM:            std_logic_vector(31 downto 0);
+	signal Branch2JumpMux:    std_logic_vector(31 downto 0);
+	signal ShiftJump2MuxJump: std_logic_vector(31 downto 0);
+	signal FA_MUXjump:        std_logic_vector(31 downto 0);
+	signal MuxJump2PC:        std_logic_vector(31 downto 0);
+
 BEGIN
  	--
 	FOUR <= std_logic_vector(to_unsigned(4,32));
@@ -136,11 +142,11 @@ BEGIN
 			in1     => PC_FA_IM,
 			in2     => FOUR, 
 			carryin => "0",
-			sum     => FA_PC);
+			sum     => FA_MUXjump);
 
 	PC1: ProgramCounter
 		port map(
-			inPC  => FA_PC,
+			inPC  => MuxJump2PC,
 			outPC => PC_FA_IM,
 			CLK   => CLK,
 			Rst   => Rst);
@@ -169,7 +175,8 @@ BEGIN
 			MemWrite => MemWrite,
 			MemRead  => MemRead,
 			RegDst   => RegDst,
-			MemToReg => MemToReg);
+			MemToReg => MemToReg,
+			Jump     => Jump);
 
 	ALUC_1: ALUControl
 		port map(
@@ -211,10 +218,22 @@ BEGIN
 			MUXout => DataWriteIn,                                      
 			sel    => MemToReg);
 
+	-- I need to multiply by 4 the target address because the IM has byte lines -> shift by 2
+	-- I can jump only in the 1/16 of the total IM due to 26 bit offset limitation
+	-- For random jump to all 2^32-1 address use jr
+	ShiftJump2MuxJump <= FA_MUXjump(31 downto 28) & OUT_IM(25 downto 0) & "00";
+	MUXjump: MUX2_32
+		port map(
+			MUXin1 => FA_MUXjump,
+			MUXin2 => ShiftJump2MuxJump,
+			MUXout => MuxJump2PC,
+			sel    => Jump);
+
 	SignEx1: SignExtend
 		port map(
 			SignExIn  =>  OUT_IM(15 downto 0),
 			SignExOut => SignExOut);
+
 	-- Generic output
 	outMIPS  <= outALU;
 --

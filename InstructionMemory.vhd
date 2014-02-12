@@ -37,6 +37,11 @@ ARCHITECTURE InstructionMemory_1 of InstructionMemory is
 		14 => "00111" & "000",  --rd: destination register (7)
 		                        --shift: unused
 		15 => "00" & "100000",  --funct: 0x20 add
+		-- Instruction 4:
+		16 => "000010" & "00",
+		17 => "00000000",
+		18 => "00000000",
+		19 => "00000011",
 		others=> (others => '0'));
 
 	signal FullInstruction: std_logic_vector(31 downto 0); -- to merge the 4 memory bytes
