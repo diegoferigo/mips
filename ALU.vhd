@@ -45,16 +45,12 @@ ARCHITECTURE ALU_1 of ALU is
 			num  : in  std_logic_vector(4 downto 0));      -- numbers of bit shifted (max 31)
 	end component;
 
-	---- Signals between blocks
-	--signal operation_shifter  : std_logic; -- to set right or left -- there's already the op in ALU
-	--signal num_shifter  : std_logic; -- to pick up the shift amount
 	signal op_shifter: std_logic;
 	signal carryout:   std_logic;
 	signal out_FA: std_logic_vector(31 downto 0);
 	signal out_SH: std_logic_vector(31 downto 0);
-	signal x:      std_logic_vector(31 downto 0) := (others=>'X'); -- all X signal vector
+	signal x:      std_logic_vector(31 downto 0) := (others=>'X');
 	signal slt_result: std_logic_vector(31 downto 0);
-	--signal temp: std_logic_vector(31 downto 0) := (others => '0');
 
 BEGIN
 --
@@ -71,7 +67,7 @@ BEGIN
 		std_logic_vector(to_unsigned(1,32));
 --
 	with op select
-		outALU <= --TODO valore sbagliato uscita BOH
+		outALU <=
 			-- sum:
 			out_FA when "0001",
 			-- and:

@@ -30,10 +30,10 @@ ARCHITECTURE MIPS_1 of MIPS is
 
  	component ProgramCounter
 		port (  
-			inPC  : in std_logic_vector(31 downto 0);
+			inPC  : in  std_logic_vector(31 downto 0);
 			outPC : out std_logic_vector(31 downto 0);
-			CLK   : in std_ulogic;
-			Rst   : in std_ulogic);
+			CLK   : in  std_ulogic;
+			Rst   : in  std_ulogic);
 	end component;
 
 	component InstructionMemory
@@ -49,7 +49,6 @@ ARCHITECTURE MIPS_1 of MIPS is
 			RegWriteIn  : in  std_logic_vector(4 downto 0);
 			DataWriteIn : in  std_logic_vector(31 downto 0);
 			RegWrite    : in  std_logic;
-			--OpImmediate: in std_logic; 
 			RegOut1     : out std_logic_vector(31 downto 0);
 			RegOut2     : out std_logic_vector(31 downto 0));
 	end component;
@@ -108,40 +107,35 @@ ARCHITECTURE MIPS_1 of MIPS is
 	end component;
 
 	-- Signals between blocks
-	signal PC_FA_IM: std_logic_vector(31 downto 0); -- ProgramCounter -> FullAdder / InstructionMemory
-	--signal FA_PC: std_logic_vector(31 downto 0); -- FullAdder -> ProgramCounter
-	signal FA_PC_OUT: std_logic_vector(31 downto 0);
-	signal OUT_IM: std_logic_vector(31 downto 0); -- Output InstructionMemory
-	signal FOUR: std_logic_vector(31 downto 0); -- For 4 creation
-	signal outALU: std_logic_vector(31 downto 0); -- Output from ALU
-	signal RegWrite: std_logic;
-	signal ALUSrc:   std_logic;
-	signal ALUOp:    std_logic_vector(2 downto 0);
-	signal RegOut1:  std_logic_vector(31 downto 0);
-	signal RegOut2:  std_logic_vector(31 downto 0);
-  	signal MemWrite: std_logic;
-	signal MemRead:  std_logic;
-	signal RegDst:   std_logic;
-	signal MemToReg: std_logic;
-	signal Jump:     std_logic;
-	signal Zero:     std_logic;
-	signal Branch:   std_logic;
+	signal RegWrite:    std_logic;
+	signal ALUSrc:      std_logic;
+  	signal MemWrite:    std_logic;
+	signal MemRead:     std_logic;
+	signal RegDst:      std_logic;
+	signal MemToReg:    std_logic;
+	signal Jump:        std_logic;
+	signal Zero:        std_logic;
+	signal Branch:      std_logic;
 	signal BranchTaken: std_logic;
-	--signal OpImmediate: std_logic;
+	signal PC_FA_IM:          std_logic_vector(31 downto 0); -- ProgramCounter -> FullAdder / InstructionMemory
+	signal FA_PC_OUT:         std_logic_vector(31 downto 0);
+	signal OUT_IM:            std_logic_vector(31 downto 0); -- Output InstructionMemory
+	signal FOUR:              std_logic_vector(31 downto 0); -- For 4 creation
+	signal outALU:            std_logic_vector(31 downto 0); -- Output from ALU
+	signal ALUOp:             std_logic_vector(2 downto 0);
+	signal RegOut1:           std_logic_vector(31 downto 0);
+	signal RegOut2:           std_logic_vector(31 downto 0);
 	signal ALUControl_out:    std_logic_vector(3 downto 0);
-	signal RegWriteIn:        std_logic_vector(31 downto 0);
 	signal DataWriteIn:       std_logic_vector(31 downto 0);
 	signal MUXregOut:         std_logic_vector(4 downto 0);
 	signal MUXaluOut:         std_logic_vector(31 downto 0);
 	signal SignExOut:         std_logic_vector(31 downto 0);
 	signal outRAM:            std_logic_vector(31 downto 0);
-	signal Branch2JumpMux:    std_logic_vector(31 downto 0);
 	signal ShiftJump2MuxJump: std_logic_vector(31 downto 0);
 	signal FA_MUXjump:        std_logic_vector(31 downto 0);
 	signal MuxJump2PC:        std_logic_vector(31 downto 0);
-	signal FA_MUXbranch:      std_logic_vector(31 downto 0);
 	signal MuxBranch2MuxJump: std_logic_vector(31 downto 0);
-	signal ALUbranchOut:         std_logic_vector(31 downto 0);
+	signal ALUbranchOut:      std_logic_vector(31 downto 0);
 	signal SignExOutAligned:  std_logic_vector(31 downto 0);
 
 BEGIN
@@ -233,7 +227,7 @@ BEGIN
 
 	MUXram: MUX2_32
 		port map(
-			MUXin1 => outALU, --occhio allo schema
+			MUXin1 => outALU,
 			MUXin2 => outRAM,
 			MUXout => DataWriteIn,                                      
 			sel    => MemToReg);

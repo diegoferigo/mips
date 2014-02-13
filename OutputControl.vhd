@@ -4,11 +4,10 @@ use ieee.std_logic_1164.all;
 ENTITY OutputControl is
 	port (
 		OC_in    : in  std_logic_vector(5 downto 0);
-		RegWrite : out std_logic := '0'; -- to Registers
-		ALUSrc   : out std_logic; -- Second ALU input MUX
+		RegWrite : out std_logic := '0';
+		ALUSrc   : out std_logic;
 		ALUOp    : out std_logic_vector(2 downto 0);
 		MemWrite : out std_logic;
-		--MemWrite_temp: out std_logic;
 		MemRead  : out std_logic;
 		RegDst   : out std_logic;
 		MemToReg : out std_logic;
@@ -22,7 +21,6 @@ BEGIN
 --
 	with OC_in select
 		RegWrite <=
-			--'1' when "101011", --0x2B only when store in memory
 			'1' after 10 ns when "100011",--0x23 load by memory
 			'1' after 10 ns when "000000",--0x00 all arithmetic functions
 			'0' when others;
@@ -32,7 +30,6 @@ BEGIN
 			'1' after 2 ns when "100011", --0x23 load word
 			'1' after 2 ns when "101011", --0x2B store word
 			'1' after 2 ns when "001000", --0x08 add immediate
-			--TODO when branch 
 			'0' when others;
 
 	with OC_in select

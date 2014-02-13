@@ -47,7 +47,7 @@ BEGIN
 --
 	stimilus: process(CLK)
 	begin
-		if (rising_edge(CLK)) then -- and Rst='0') then
+		if (rising_edge(CLK)) then
 			inRAM     <= "00000000000000000000000000000110";
 			WriteData <= "11000000000000000000000000000011";
 			MemWrite  <= '1' after 2 ns;

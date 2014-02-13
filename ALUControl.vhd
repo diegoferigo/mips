@@ -1,7 +1,5 @@
 library ieee;
 use ieee.std_logic_1164.all;
---use ieee.std_logic_arith.all;
---use ieee.std_logic_unsigned.all;
 
 ENTITY ALUControl is
 	port (
@@ -51,14 +49,12 @@ BEGIN
 			"1000" when "000010", --0x02
 			"1100" when "101010", --0x2A slt
 			"1111" when others;
-			--all others type
-	with ALUOp select --TODO sistemare qua
+	with ALUOp select
 		tmpALUControl_op <=
 			"0001" when "001", --0x2B Store and 0x23 Load: i have to sum the base and relative address
 			"1010" when "010", --0x04 beq
 			"1011" when "011", --0x05 bne
 			"1111" when others;
-			--The real output signal:
 	with ALUOp select
 		ALUCont_out <=
 			tmpALUControl_func when "000",
