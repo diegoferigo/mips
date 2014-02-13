@@ -19,6 +19,7 @@ ARCHITECTURE Registers_1 of Registers is
 	signal regs: registers := (
 			3=>"00000000000000000000000000000010",
 			4=>"00000000000000000000111111000000",
+			10=>"00000000000000000000000000000010",
 			others=> (others => '0'));
 --
 BEGIN

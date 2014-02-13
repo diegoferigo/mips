@@ -6,13 +6,14 @@ ENTITY OutputControl is
 		OC_in    : in  std_logic_vector(5 downto 0);
 		RegWrite : out std_logic := '0'; -- to Registers
 		ALUSrc   : out std_logic; -- Second ALU input MUX
-		ALUOp    : out std_logic_vector(1 downto 0);
+		ALUOp    : out std_logic_vector(2 downto 0);
 		MemWrite : out std_logic;
 		--MemWrite_temp: out std_logic;
 		MemRead  : out std_logic;
 		RegDst   : out std_logic;
 		MemToReg : out std_logic;
-		Jump     : out std_logic);
+		Jump     : out std_logic;
+		Branch   : out std_logic);
 END OutputControl;
 
 ARCHITECTURE OutputControl_1 of OutputControl is
@@ -35,12 +36,13 @@ BEGIN
 			'0' when others;
 
 	with OC_in select
-		ALUOp <= --(00) always except when i have ram i/o (01) or branch (10)
-			"00" after 2 ns when "000000", --Arith operation
-			"01" after 2 ns when "100011", --RAM operations (load)
-			"01" after 2 ns when "101011", --RAM operations (store)
-			--"10" when "", --
-			"11" when others;
+		ALUOp <= --(000) always except when i have ram i/o (001) or branch (010/011)
+			"000" after 2 ns when "000000", --Arith operation
+			"001" after 2 ns when "100011", --RAM operations (load)
+			"001" after 2 ns when "101011", --RAM operations (store)
+			"010" after 2 ns when "000100", --0x04 beq
+			"011" after 2 ns when "000101", --0x05 bne
+			"111" when others;
 
 	with OC_in select
 		MemWrite <=
@@ -65,6 +67,12 @@ BEGIN
 	with OC_in select
 		Jump <=
 			'1' when "000010", --0x02 jump to address
+			'0' when others;
+
+	with OC_in select
+		Branch <=
+			'1' when "000100", --0x04 beq
+			'1' when "000101", --0x05 bne
 			'0' when others;
 --
 END OutputControl_1;

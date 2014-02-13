@@ -1,14 +1,14 @@
 library ieee;
 use ieee.std_logic_1164.all;
---use ieee.std_logic_arith.all;
---use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
 ENTITY ALU IS
 	port (
 		in1    : in  std_logic_vector(31 downto 0);
 		in2    : in  std_logic_vector(31 downto 0);
 		op     : in  std_logic_vector(3 downto 0);
-		outALU : out  std_logic_vector(31 downto 0));
+		outALU : out std_logic_vector(31 downto 0);
+		Zero   : out std_logic);
 END ALU;
 
 -- OP mapping:
@@ -23,6 +23,9 @@ END ALU;
 -- 0111: shift left
 -- 1000: shift right
 -- 1001: add immediate
+-- 1010: check if equal
+-- 1011: check if not equal
+-- 1100: slt operation
 
 ARCHITECTURE ALU_1 of ALU is
 
@@ -50,6 +53,7 @@ ARCHITECTURE ALU_1 of ALU is
 	signal out_FA: std_logic_vector(31 downto 0);
 	signal out_SH: std_logic_vector(31 downto 0);
 	signal x:      std_logic_vector(31 downto 0) := (others=>'X'); -- all X signal vector
+	signal slt_result: std_logic_vector(31 downto 0);
 	--signal temp: std_logic_vector(31 downto 0) := (others => '0');
 
 BEGIN
@@ -61,6 +65,10 @@ BEGIN
 --
 	FA_ALU: FullAdder port map(in1 => in1, in2 => in2, carryin => "0", sum => out_FA, carryout=>carryout);
 	SH_ALU: Shifter	  port map(Sin => in1, Sout => out_SH, opS => op_shifter, num => in2(4 downto 0)); -- only last 5 bits
+--
+	slt_result <=
+		std_logic_vector(to_unsigned(0,32)) when (to_integer(signed(in1)) < to_integer(signed(in2))) else
+		std_logic_vector(to_unsigned(1,32));
 --
 	with op select
 		outALU <= --TODO valore sbagliato uscita BOH
@@ -80,5 +88,14 @@ BEGIN
 			out_SH  when "0111",
 			-- shift right
 			out_SH  when "1000",
+			-- slt
+			slt_result when "1100",
 			x       when others;
+	
+	Zero <=
+		-- beq
+		'1' when ((in1 = in2) and (op = "1010")) else
+		-- bne
+		'1' when ((in1 /= in2) and (op = "1011")) else
+		'0';
 END ALU_1;
