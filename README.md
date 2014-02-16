@@ -46,7 +46,8 @@ S5 = S1 + S2
 Memory[S3 + 5] = S5
 S10 = Memory[S3 + 5]
 ```
-If prompts no error go on
+If prompts no error go on.
+
 3) Generate the VHDL ready inititialization lines for Instruction Memory
 ```
 [diego@xps13 script]$ sh GenInstructionMemoryInit.sh InstructionListTest1 -m
