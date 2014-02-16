@@ -50,11 +50,13 @@ ARCHITECTURE InstructionMemory_1 of InstructionMemory is
 		others=> (others => '0'));
 
 	signal FullInstruction: std_logic_vector(31 downto 0); -- to merge the 4 memory bytes
+	signal IM_address:      integer;
 
 BEGIN
 --
-	FullInstruction <= mem(to_integer(unsigned(inIM)))   & mem(to_integer(unsigned(inIM))+1) &
-	                   mem(to_integer(unsigned(inIM))+2) & mem(to_integer(unsigned(inIM))+3);
+	IM_address <= to_integer(unsigned(inIM));-- when (to_integer(unsigned(inIM)) >= 0) else 0;
+	FullInstruction <= mem(IM_address) & mem(IM_address+1) & mem(IM_address+2) & mem(IM_address+3)
+		               when (IM_address >= 0) else std_logic_vector(to_signed(-1,32));
 	outIM <= FullInstruction;
 --
 END InstructionMemory_1;

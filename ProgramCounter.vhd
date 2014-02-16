@@ -15,12 +15,11 @@ ARCHITECTURE ProgramCounter_1 of ProgramCounter is
 BEGIN
  	reg: process(CLK)
 	begin
-		if (CLK'event and CLK='1') then
-			if (Rst = '1') then
-				outPC <= std_logic_vector(to_signed(0,32));
-			else
-				outPC <= inPC;
-			end if;
+		if ((Rst='1' and CLK='0') or Rst='1') then
+			outPC <= std_logic_vector(to_signed(-4,32));
+		end if;
+		if rising_edge(CLK) then
+			outPC <= inPC;
 		end if;
 	end process;
 END ProgramCounter_1;
