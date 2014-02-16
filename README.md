@@ -97,3 +97,4 @@ signal mem: mem_type(0 to 1023) := (
 ###Resources:
 - [Instruction format](http://en.wikibooks.org/wiki/MIPS_Assembly/Instruction_Formats)
 - [Numeric_Std library conversions](http://www.lothar-miller.de/s9y/categories/16-Numeric_Std)
+- [Sigasi: get rid to ModelSim editor](http://www.sigasi.com/)
