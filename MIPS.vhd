@@ -62,6 +62,7 @@ ARCHITECTURE MIPS_1 of MIPS is
 
 	component OutputControl
 		port (
+			CLK         : in std_logic;
 			OC_in       : in  std_logic_vector(5 downto 0);
 			RegWrite    : out std_logic; -- to Registers
 			ALUSrc      : out std_logic; -- Second ALU input MUX
@@ -180,6 +181,7 @@ BEGIN
 
 	OC1: OutputControl
 		port map(
+			CLK      => CLK,
 			OC_in    => OUT_IM(31 downto 26),
 			RegWrite => RegWrite,
 			ALUSrc   => ALUSrc,

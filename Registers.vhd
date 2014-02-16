@@ -25,8 +25,10 @@ BEGIN
 	RegOut1 <= regs(to_integer(unsigned(RegIn1)));
 	RegOut2 <= regs(to_integer(unsigned(RegIn2)));
 	--
+	RegWriteDelayed <= transport RegWrite after 1 ns;
+	--
 	-- During the first clock cycle the ALU output is X and if RegWrite is set to 1 it writes X in a register.
 	-- Exclude DataWriteIn=x fix the problem
-	regs(to_integer(unsigned(RegWriteIn))) <= DataWriteIn when (RegWrite='1' and DataWriteIn/=x);
+	regs(to_integer(unsigned(RegWriteIn))) <= DataWriteIn when (RegWriteDelayed='1' and DataWriteIn/=x);
 --
 END Registers_1;

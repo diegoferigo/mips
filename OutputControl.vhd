@@ -3,6 +3,7 @@ use ieee.std_logic_1164.all;
 
 ENTITY OutputControl is
 	port (
+		CLK      : in std_logic;
 		OC_in    : in  std_logic_vector(5 downto 0);
 		RegWrite : out std_logic := '0';
 		ALUSrc   : out std_logic;
@@ -21,9 +22,9 @@ BEGIN
 --
 	with OC_in select
 		RegWrite <=
-			'1' after 10 ns when "100011",--0x23 load by memory
-			'1' after 10 ns when "000000",--0x00 all arithmetic functions
-			'1' when "001000",--0x08 addi
+			('1' and CLK) when "100011",--0x23 load by memory
+			('1' and CLK) when "000000",--0x00 all arithmetic functions
+			('1' and CLK) when "001000",--0x08 addi
 			'0' when others;
 
 	with OC_in select
