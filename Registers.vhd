@@ -21,12 +21,16 @@ ARCHITECTURE Registers_1 of Registers is
 			4=>"00000000000000000000111111000000",
 			10=>"00000000000000000000000000000010",
 			others=> (others => '0'));
+	signal RegWriteDelayed : std_logic;
+	signal x: std_logic_vector(31 downto 0) := (others=>'X');
 --
 BEGIN
 --
 	RegOut1 <= regs(to_integer(unsigned(RegIn1)));
 	RegOut2 <= regs(to_integer(unsigned(RegIn2)));
 	--
-	regs(to_integer(unsigned(RegWriteIn))) <= DataWriteIn when RegWrite='1';
+	-- During the first clock cycle the ALU output is X and if RegWrite is set to 1 it writes X in a register.
+	-- Exclude DataWriteIn=x fix the problem
+	regs(to_integer(unsigned(RegWriteIn))) <= DataWriteIn when (RegWrite='1' and DataWriteIn/=x);
 --
 END Registers_1;
