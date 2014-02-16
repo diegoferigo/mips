@@ -23,22 +23,24 @@ BEGIN
 		RegWrite <=
 			'1' after 10 ns when "100011",--0x23 load by memory
 			'1' after 10 ns when "000000",--0x00 all arithmetic functions
+			'1' when "001000",--0x08 addi
 			'0' when others;
 
 	with OC_in select
 		ALUSrc <=
 			'1' after 2 ns when "100011", --0x23 load word
 			'1' after 2 ns when "101011", --0x2B store word
-			'1' after 2 ns when "001000", --0x08 add immediate
+			'1' after 2 ns when "001000", --0x08 addi
 			'0' when others;
 
 	with OC_in select
-		ALUOp <= --(000) always except when i have ram i/o (001) or branch (010/011)
+		ALUOp <=
 			"000" after 2 ns when "000000", --Arith operation
 			"001" after 2 ns when "100011", --RAM operations (load)
 			"001" after 2 ns when "101011", --RAM operations (store)
 			"010" after 2 ns when "000100", --0x04 beq
 			"011" after 2 ns when "000101", --0x05 bne
+			"100" after 2 ns when "001000", --0x08 addi
 			"111" when others;
 
 	with OC_in select
@@ -58,7 +60,8 @@ BEGIN
 
 	with OC_in select
 		RegDst <=
-			'0' after 2 ns when "100011", --0x23 load word
+			'0' when "100011", --0x23 load word
+			'0' when "001000", --0x08 addi
 			'1' when others;
 
 	with OC_in select

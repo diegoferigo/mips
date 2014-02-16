@@ -28,6 +28,7 @@ ARCHITECTURE ALUControl_1 of ALUControl is
 -- 1010: check if equal
 -- 1011: check if not equal
 -- 1100: slt operation
+-- 1101: addi
 --
 -- ALUOp mapping:
 -- 00: R type -> i look the funct operation
@@ -54,6 +55,7 @@ BEGIN
 			"0001" when "001", --0x2B Store and 0x23 Load: i have to sum the base and relative address
 			"1010" when "010", --0x04 beq
 			"1011" when "011", --0x05 bne
+			"1101" when "100", --0x08 addi
 			"1111" when others;
 	with ALUOp select
 		ALUCont_out <=

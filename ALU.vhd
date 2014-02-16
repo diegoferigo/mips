@@ -26,6 +26,7 @@ END ALU;
 -- 1010: check if equal
 -- 1011: check if not equal
 -- 1100: slt operation
+-- 1101: addi
 
 ARCHITECTURE ALU_1 of ALU is
 
@@ -47,9 +48,9 @@ ARCHITECTURE ALU_1 of ALU is
 
 	signal op_shifter: std_logic;
 	signal carryout:   std_logic;
-	signal out_FA: std_logic_vector(31 downto 0);
-	signal out_SH: std_logic_vector(31 downto 0);
-	signal x:      std_logic_vector(31 downto 0) := (others=>'X');
+	signal out_FA:     std_logic_vector(31 downto 0);
+	signal out_SH:     std_logic_vector(31 downto 0);
+	signal x:          std_logic_vector(31 downto 0) := (others=>'X');
 	signal slt_result: std_logic_vector(31 downto 0);
 
 BEGIN
@@ -86,7 +87,9 @@ BEGIN
 			out_SH  when "1000",
 			-- slt
 			slt_result when "1100",
-			x       when others;
+			-- addi
+			out_FA when "1101",
+			x when others;
 	
 	Zero <=
 		-- beq
