@@ -16,11 +16,7 @@ END Registers;
 ARCHITECTURE Registers_1 of Registers is
 --
 	type registers is array (0 to 31) of std_logic_vector(31 downto 0);
-	signal regs: registers := (
-			3=>"00000000000000000000000000000010",
-			4=>"00000000000000000000111111000000",
-			10=>"00000000000000000000000000000010",
-			others=> (others => '0'));
+	signal regs: registers := (others=> (others => '0'));
 	signal RegWriteDelayed : std_logic;
 	signal x: std_logic_vector(31 downto 0) := (others=>'X');
 --
