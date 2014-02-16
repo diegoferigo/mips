@@ -1,0 +1,6 @@
+addi S1 S10 20
+addi S2 S10 10
+addi S3 S10 50
+add S5 S1 S2
+sw S5 S3 5
+lw S10 S3 5
