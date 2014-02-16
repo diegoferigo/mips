@@ -21,7 +21,7 @@
 Be aware to some differences for example the load and store syntax compared to the standard.
 
 ### Generate binary machine language from assembly code
-1. Write a plain text file with assembly instruction like examples in the table and put it in the _script/_ folder. E.g:
+1) Write a plain text file with assembly instruction like examples in the table and put it in the _script/_ folder. E.g:
 ```
 addi S1 S10 20
 addi S2 S10 10
@@ -30,7 +30,7 @@ add S5 S1 S2
 sw S5 S3 5
 lw S10 S3 5
 ```
-2. Check if the file contains valid instructions and check the logic
+2) Check if the file contains valid instructions and check the logic
 ```
 diego@xps13 ~script] sh GenInstructionMemoryInit.sh InstructionListTest 
 00100001010000010000000000010100
@@ -47,7 +47,7 @@ Memory[S3 + 5] = S5
 S10 = Memory[S3 + 5]
 ```
 If prompts no error go on
-3. Generate the VHDL ready inititialization lines for Instruction Memory
+3) Generate the VHDL ready inititialization lines for Instruction Memory
 ```
 [diego@xps13 script]$ sh GenInstructionMemoryInit.sh InstructionListTest1 -m
 0 => "00100001",
@@ -75,7 +75,7 @@ If prompts no error go on
 22 => "00000000",
 23 => "00000101",
 ```
-4. Paste the line in InstructionMemory.vhd file. Example, from:
+4) Paste the line in InstructionMemory.vhd file. Example, from:
 ```
 signal mem: mem_type(0 to 1023) := (
     	others=> (others => '0'));
@@ -90,7 +90,7 @@ signal mem: mem_type(0 to 1023) := (
                 (...)
 		        others=> (others => '0'));
 ```
-5. Simulate with ModelSim
+5) Simulate with ModelSim
 
 ---
 ###Resources:
