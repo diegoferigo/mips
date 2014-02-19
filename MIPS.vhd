@@ -133,7 +133,6 @@ ARCHITECTURE MIPS_1 of MIPS is
 	signal SignExOut:         std_logic_vector(31 downto 0);
 	signal outRAM:            std_logic_vector(31 downto 0);
 	signal ShiftJump2MuxJump: std_logic_vector(31 downto 0);
-	signal FA_MUXjump:        std_logic_vector(31 downto 0);
 	signal MuxJump2PC:        std_logic_vector(31 downto 0);
 	signal MuxBranch2MuxJump: std_logic_vector(31 downto 0);
 	signal ALUbranchOut:      std_logic_vector(31 downto 0);
@@ -237,7 +236,7 @@ BEGIN
 	-- I need to multiply by 4 the target address because the IM has byte lines -> shift by 2
 	-- I can jump only in the 1/16 of the total IM due to 26 bit offset limitation
 	-- For random jump to all 2^32-1 address use jr
-	ShiftJump2MuxJump <= FA_MUXjump(31 downto 28) & OUT_IM(25 downto 0) & "00";
+	ShiftJump2MuxJump <= FA_PC_OUT(31 downto 28) & OUT_IM(25 downto 0) & "00";
 	MUXjump: MUX2_32
 		port map(
 			MUXin1 => MuxBranch2MuxJump,
